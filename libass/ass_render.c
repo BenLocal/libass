@@ -24,9 +24,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-#ifdef CONFIG_UNIBREAK
 #include <linebreak.h>
-#endif
 
 #include "ass_outline.h"
 #include "ass_render.h"
@@ -1629,13 +1627,8 @@ static void trim_whitespace(ASS_Renderer *render_priv)
 }
 #undef IS_WHITESPACE
 
-#ifdef CONFIG_UNIBREAK
     #define ALLOWBREAK(glyph,index) (unibrks ? unibrks[index] == LINEBREAK_ALLOWBREAK : glyph == ' ')
     #define FORCEBREAK(glyph,index) (unibrks ? unibrks[index] == LINEBREAK_MUSTBREAK  : glyph == '\n')
-#else
-    #define ALLOWBREAK(glyph,index) (glyph == ' ')
-    #define FORCEBREAK(glyph,index) (glyph == '\n')
-#endif
 
 /*
  * Starts a new line on the first breakable character after overflow
@@ -1819,12 +1812,10 @@ wrap_lines_smart(ASS_Renderer *render_priv, double max_text_width)
 {
     char *unibrks = NULL;
 
-#ifdef CONFIG_UNIBREAK
     unibrks = render_priv->text_info.breaks;
     set_linebreaks_utf32(
         render_priv->text_info.event_text, render_priv->text_info.length,
         render_priv->track->Language, unibrks);
-#endif
 
     wrap_lines_naive(render_priv, max_text_width, unibrks);
     wrap_lines_rebalance(render_priv, max_text_width, unibrks);
