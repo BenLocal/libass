@@ -98,17 +98,11 @@ AS_IF([test "x$enable_test" = xyes || test "x$enable_compare" = xyes], [
     ])
 ])
 
-AS_IF([test "x$enable_libunibreak" != xno], [
-    PKG_CHECK_MODULES([LIBUNIBREAK], [libunibreak >= 1.1], [
-        pkg_requires="libunibreak >= 1.1, ${pkg_requires}"
-        CFLAGS="$CFLAGS $LIBUNIBREAK_CFLAGS"
-        LIBS="$LIBS $LIBUNIBREAK_LIBS"
-        AC_DEFINE(CONFIG_UNIBREAK, 1, [found libunibreak via pkg-config])
-    ], [
-        AS_IF([test "x$enable_libunibreak" = xyes], [
-            AC_MSG_ERROR([Couldn't locate libunibreak required for requested feature.])
-        ])
-    ])
+PKG_CHECK_MODULES([LIBUNIBREAK], [libunibreak >= 1.1], [
+    pkg_requires="libunibreak >= 1.1, ${pkg_requires}"
+    CFLAGS="$CFLAGS $LIBUNIBREAK_CFLAGS"
+    LIBS="$LIBS $LIBUNIBREAK_LIBS"
+    AC_DEFINE(CONFIG_UNIBREAK, 1, [found libunibreak via pkg-config])
 ])
 
 ## Check for system font providers
